@@ -5,11 +5,12 @@ import cors from "cors"
 const app = express().use(cors({ optionsSuccessStatus: 200 }))
 
 app.get("/", (_req, res) => res.send("Hello World"))
-app.post("/api/fileanalyse", multer().single("file"), (req, res) => {
+app.post("/api/fileanalyse", multer().any(), (req, res) => {
+    const file = (req.files as Array<Express.Multer.File>).shift()!
     res.json({
-        name: req.file?.originalname,
-        type: req.file?.mimetype,
-        size: req.file?.size
+        name: file.originalname,
+        type: file.mimetype,
+        size: file.size
     })
 })
 
